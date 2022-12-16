@@ -1,1 +1,1 @@
-# EveryPjec
+# Mini Project : Every Project
