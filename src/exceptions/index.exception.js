@@ -12,7 +12,17 @@ class ValidationError extends Error {
     super(message);
     this.status = status || 412;
     this.name = 'ValidationError';
+    if (!message) this.message = '알 수 없는 오류가 발생했습니다.';
   }
 }
 
-module.exports = { InvalidParamsError, ValidationError };
+class AuthenticationError extends Error {
+  constructor(message, status) {
+      super(message);
+      this.status = status || 403;
+      this.name = 'AuthenticationError';
+      if (!message) this.message = '로그인이 필요한 서비스입니다.';
+  }
+}
+
+module.exports = { InvalidParamsError, ValidationError, AuthenticationError };
