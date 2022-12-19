@@ -21,6 +21,7 @@ class CommentRepository {
       userId,
       comment,
     });
+    console.log(createPostData);
 
     return createPostData;
   };
