@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       loginId: {
         unique: true,
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       password: {
