@@ -87,7 +87,6 @@ class PostService {
   ) => {
     const findPost = await this.postRepository.findPostById(postId);
     if (!findPost) throw new Error("Post doesn't exist");
-
     const upPost = await this.postRepository.updatePost(
       postId,
       title,

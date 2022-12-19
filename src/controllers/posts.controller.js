@@ -6,7 +6,8 @@ class PostsController {
   //게시글 생성
   createPost = async (req, res, next) => {
     try {
-      const { userId } = res.locals.user;
+      const { userId } = res.locals;
+
       const {
         title,
         content,

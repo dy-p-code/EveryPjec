@@ -21,7 +21,6 @@ class CommentService {
   };
 
   createComment = async (postId, userId, comment) => {
-    console.log(postId, userId, comment);
     const created = await this.commentRepository.createComment(
       postId,
       userId,

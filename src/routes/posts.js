@@ -6,11 +6,11 @@ const PostsController = require('../controllers/posts.controller');
 const postsController = new PostsController();
 
 // 게시글 생성
-router.post('/', postsController.createPost);
+router.post('/', authMiddleware, postsController.createPost);
 // 게시글 수정
-router.put('/:postId', postsController.updatePost);
+router.put('/:postId', authMiddleware, postsController.updatePost);
 // 게시글 삭제
-router.delete('/:postId', postsController.deletePost);
+router.delete('/:postId', authMiddleware, postsController.deletePost);
 // 게시글 조회
 router.get('/', postsController.getPosts);
 // 게시글 상세조회
