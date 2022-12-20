@@ -1,12 +1,7 @@
 require('dotenv').config();
 const cors = require('cors');
-const corsOptions = {
-  origin: "http://localhost:3000",
-  credentials: true
-}
 const express = require('express');
 const app = express();
-app.use(cors(corsOptions));
 app.use(express.json());
 const routes = require('./routes/index.js');
 // const swaggerUi = require('swagger-ui-express');
@@ -22,7 +17,8 @@ const {
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
+app.use(cors());
+app.use('/', routes);
 app.use(errorLogger); // Error Handler
 app.use(errorHandler); // Error Handler
-app.use('/', routes);
 module.exports = app;
