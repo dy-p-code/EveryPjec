@@ -15,7 +15,6 @@ class PostRepository {
       raw: true,
       order: [['updatedAt', 'desc']],
     });
-    console.log('@@@@@@@', posts);
     return posts;
   };
   //posts와 user를 조인
@@ -30,7 +29,6 @@ class PostRepository {
         },
       ],
     });
-    console.log(Post);
 
     return Post;
   };
@@ -88,6 +86,26 @@ class PostRepository {
     const deletePostData = await this.postsModel.destroy({ where: { postId } });
 
     return deletePostData;
+  };
+
+  findPost = async (userId) => {
+    console.log(userId);
+    const posts = await this.postsModel.findAll({
+      include: [
+        {
+          model: Users,
+          attributes: ['nickname', 'image'],
+        },
+      ],
+      raw: true,
+      order: [['updatedAt', 'desc']],
+      where: { userId },
+    });
+    // raw: true,
+    // order: [['updatedAt', 'desc']],
+    // where: userId,
+    //});
+    return posts;
   };
 }
 

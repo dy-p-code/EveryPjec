@@ -106,6 +106,10 @@ class PostService {
 
     return del;
   };
-}
 
+  findMePost = async (userId) => {
+    const myPosts = await this.postRepository.findPost(userId);
+    return myPosts;
+  };
+}
 module.exports = PostService;
