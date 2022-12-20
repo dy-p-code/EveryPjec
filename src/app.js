@@ -1,5 +1,9 @@
 require('dotenv').config();
 const cors = require('cors');
+let corsOptions = {
+  origin: true,
+  crediential: true,
+}
 const express = require('express');
 const app = express();
 app.use(express.json());
@@ -17,7 +21,7 @@ const {
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use('/', routes);
 app.use(errorLogger); // Error Handler
 app.use(errorHandler); // Error Handler
