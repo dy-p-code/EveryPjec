@@ -12,9 +12,10 @@ class PicksController {
    * @param {import("express").NextFunction} next - express Response
    **/
 
-  //
+  // 찜하기 불러오기
   getAllPick = async (req, res, next) => {
     try {
+      //const { userId } = req.params;
       const picks = await this.picksService.getAllPick({});
 
       res.status(200).json({ data: picks });
@@ -23,16 +24,17 @@ class PicksController {
     }
   };
 
-  //
+  // 찜하기 등록
   createPick = async (req, res, next) => {
     try {
-      const { userId, postId } = req.params;
+      const { postId } = req.params;
+      const { userId } = res.locals;
 
-      if (!postId || userId) {
+      if (!userId) {
         throw new InvalidParamsError('찜하기 실패!');
       }
 
-      const pick = await this.picksService.createPick({
+      await this.picksService.createPick({
         postId,
         userId,
       });
@@ -43,16 +45,17 @@ class PicksController {
     }
   };
 
-  //
+  // 찜하기 삭제
   deletePick = async (req, res, next) => {
     try {
-      const { userId, postId } = req.params;
+      const { postId } = req.params;
+      const { userId } = res.locals;
 
-      if (!postId || userId) {
-        throw new InvalidParamsError('찜하기 실패!');
+      if (!userId) {
+        throw new InvalidParamsError('찜하기 삭제 실패!');
       }
 
-      const pick = await this.picksService.deletePick({
+      await this.picksService.deletePick({
         postId,
         userId,
       });

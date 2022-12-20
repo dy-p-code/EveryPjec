@@ -2,6 +2,7 @@ const { Picks, Posts, Users } = require('../models');
 const { ValidationError } = require('../exceptions/index.exception');
 
 const { Op } = require('sequelize');
+const { cloneElement } = require('react');
 
 class PicksRepository extends Picks {
   constructor() {
@@ -14,59 +15,62 @@ class PicksRepository extends Picks {
    * @param {import("express").NextFunction} next - express Response
    **/
 
-  //
+  // 찜하기 불러오기
   getAllPick = async ({}) => {
     try {
-      return (pick = await Picks.findAll({
-        where: {
-          [Op.or]: [{ postId }],
-        },
-        include: [Users, Posts],
-      }));
+      const pick = await Picks.findAll({
+        attributes: ['userId'],
+        where: { postId: 'postId' },
+        order: [['createdAt']],
+      });
+      return pick;
     } catch (error) {
       throw error;
     }
   };
 
-  //
+  // 찜하기 찾기
   findPick = async ({ userId, postId }) => {
     try {
-      return (pick = await Picks.findone({
+      const pick = await Picks.findOne({
         where: {
           [Op.and]: [{ userId }, { postId }],
         },
-      }));
+      });
+      return pick;
     } catch (error) {
       throw error;
     }
   };
 
-  //
-  createPick = async ({ userId, postId }) => {
+  // 찜하기 등록
+  createPick = async ({ postId, userId }) => {
     try {
-      return (pick = await Picks.create({
+      const pick = await Picks.create({
         userId,
         postId,
-      }));
+      });
+      return pick;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   };
 
-  //
+  // 찜하기 삭제
   deletePick = async ({ userId, postId }) => {
     try {
-      return (pick = await Picks.destroy({
+      const pick = await Picks.destroy({
         where: {
           [Op.and]: [{ userId }, { postId }],
         },
         userId,
         postId,
-      }));
+      });
+      return pick;
     } catch (error) {
       throw error;
     }
   };
 }
-
 module.exports = PicksRepository;

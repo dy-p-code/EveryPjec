@@ -1,16 +1,16 @@
 const express = require('express');
 
-const authMiddleware = require('../middlewares/authMiddleware');
+const authMiddleware = require('../middlewares/auth-middleware');
 
 const router = express.Router();
 
 const PicksController = require('../controllers/picks.controller');
 const picksController = new PicksController();
 
-router.get('/', authMiddleware, picksController.getAllPick);
+router.get('/:userId', authMiddleware, picksController.getAllPick);
 
-router.put('/', authMiddleware, picksController.createPick);
+router.post('/:postId', authMiddleware, picksController.createPick);
 
-router.delete('/:pickId', authMiddleware, picksController.deletePick);
+router.delete('/:postId', authMiddleware, picksController.deletePick);
 
 module.exports = router;

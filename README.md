@@ -65,7 +65,8 @@ The table in the content is shown in the list below.
     HASH=sha256
     DIGEST=base64
 
-2.  If you are using a DB with the same name,
+2.  If you don't have a DB created with the same name,
+    process 1 can be omitted. If not, it must be implemented from number 1.
     please run the contents below in order at the terminal.
     This is the procedure for 1) database drop 2) create 3) migration.
 
@@ -73,7 +74,10 @@ The table in the content is shown in the list below.
     2. npx sequelize db:create --config ./src/config/config.js
     3. npx sequelize db:migrate --config ./src/config/config.js --migrations-path ./src/migrations --models-path ./src/models
 
-3.  Run the server by entering the command in your terminal.
+3.  install the npm package by entering the command in your terminal.
+    ex. npm i
+
+4.  Run the server by entering the command in your terminal.
     ex. npm run dev
 
 # Questions / inquiries
