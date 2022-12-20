@@ -77,3 +77,5 @@ The table in the content is shown in the list below.
     ex. npm run dev
 
 # Questions / inquiries
+
+You can get help from Google.
