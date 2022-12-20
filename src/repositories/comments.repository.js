@@ -1,3 +1,4 @@
+const { Users, sequelize } = require('../models');
 class CommentRepository {
   constructor(commentsModel) {
     this.commentsModel = commentsModel;
@@ -10,8 +11,10 @@ class CommentRepository {
           attributes: ['nickname', 'image'],
         },
       ],
+      raw: true,
       order: [['updatedAt', 'desc']],
     });
+    console.log(Posts);
     return Posts;
   };
 
@@ -26,7 +29,7 @@ class CommentRepository {
     return createPostData;
   };
 
-  updateComment = async (commentId, comment) => {
+  updateComment = async (userId, commentId, comment) => {
     const updatePostData = await this.commentsModel.update(
       { comment },
       { where: { commentId, userId } }

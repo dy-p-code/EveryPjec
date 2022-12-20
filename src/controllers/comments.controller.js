@@ -34,6 +34,7 @@ class CommentController {
           .json({ errorMessage: '댓글이 존재하지 않습니다.' });
       }
     } catch (error) {
+      console.log(error);
       res.status(400).send({ message: '댓글 목록 조회 실패' });
       next(error);
     }
@@ -44,11 +45,13 @@ class CommentController {
     try {
       const { commentId } = req.params;
       const { comment } = req.body;
-      const { userId } = res.locals.user;
+      const { userId } = res.locals;
+
       await this.CommentService.updateComment(userId, commentId, comment);
 
       res.status(201).json({ message: '댓글을 수정 완료' });
     } catch (error) {
+      console.log(error);
       res.status(400).send({ message: '댓글 수정 실패' });
       next(error);
     }
@@ -57,12 +60,13 @@ class CommentController {
   //게시글 삭제
   deleteComment = async (req, res, next) => {
     const { commentId } = req.params;
-    const { userId } = res.locals.user;
+    const { userId } = res.locals;
     try {
       await this.CommentService.deleteComment(commentId, userId);
 
       res.json({ message: '댓글을 삭제 완료' });
     } catch (error) {
+      console.log(error);
       res.status(400).send({ message: '댓글 삭제 실패' });
       next(error);
     }

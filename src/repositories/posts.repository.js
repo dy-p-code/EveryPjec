@@ -1,35 +1,44 @@
-const { Posts, Users } = require('../models');
+const { Users, sequelize } = require('../models');
+
 class PostRepository {
   constructor(postsModel) {
     this.postsModel = postsModel;
   }
   findAllPost = async () => {
-    const Posts = await this.postsModel.findAll({
+    const posts = await this.postsModel.findAll({
       include: [
         {
           model: Users,
           attributes: ['nickname', 'image'],
         },
       ],
+      raw: true,
       order: [['updatedAt', 'desc']],
     });
-    return Posts;
+    console.log('@@@@@@@', posts);
+    return posts;
   };
   //posts와 user를 조인
-  findPostById = async (postId) => {
+  findPostOne = async (postId) => {
     const Post = await this.postsModel.findOne({
+      where: { postId },
+      raw: true,
       include: [
         {
-          model: Users, // join할 모델
-          attributes: ['nickname', 'image'], // select해서 표시할 필드 지정
-          where: { postId },
+          model: Users,
+          attributes: ['nickname', 'image'],
         },
       ],
     });
+    console.log(Post);
 
     return Post;
   };
+  findPostById = async (postId) => {
+    const Post = await this.postsModel.findByPk(postId);
 
+    return Post;
+  };
   createPost = async (
     userId,
     title,

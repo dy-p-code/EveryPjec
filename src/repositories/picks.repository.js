@@ -19,8 +19,14 @@ class PicksRepository extends Picks {
   getAllPick = async ({}) => {
     try {
       const pick = await Picks.findAll({
-        attributes: ['userId'],
-        where: { postId: 'postId' },
+        include: [
+          {
+            model: Posts,
+            attributes: ['postId'],
+          },
+        ],
+        //attributes: ['userId'],
+        //where: { postId: 'postId' },
         order: [['createdAt']],
       });
       return pick;

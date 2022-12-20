@@ -32,6 +32,7 @@ class PostsController {
       );
       res.status(200).send({ message: '게시글 작성 완료' });
     } catch (error) {
+      console.log(error);
       res.status(400).send({ message: '게시글 작성 실패' });
       next(error);
     }
@@ -44,6 +45,7 @@ class PostsController {
 
       res.status(200).json({ postList: posts });
     } catch (error) {
+      console.log(error);
       res.status(400).send({ message: '게시글 조회 실패' });
       next(error);
     }
@@ -57,6 +59,7 @@ class PostsController {
 
       res.status(200).json({ postOne: post });
     } catch (error) {
+      console.log(error);
       res.status(400).send({ message: '게시글 상세 조회 실패' });
       next(error);
     }

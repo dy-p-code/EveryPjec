@@ -6,13 +6,15 @@ class CommentService {
 
   findAllComment = async (postId) => {
     const All = await this.commentRepository.findAllComment(postId);
+    console.log(All);
+    console.log(postId);
     return All.map((e) => {
       return {
         commentId: e.commentId,
         postId: e.postId,
         userId: e.userId,
-        nickname: e.nickname,
-        image: e.image,
+        nickname: e['User.nickname'],
+        image: e['User.image'],
         comment: e.comment,
         createdAt: e.createdAt,
         updateAt: e.updateAt,

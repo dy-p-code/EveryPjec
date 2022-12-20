@@ -15,7 +15,6 @@ class PicksController {
   // 찜하기 불러오기
   getAllPick = async (req, res, next) => {
     try {
-      //const { userId } = req.params;
       const picks = await this.picksService.getAllPick({});
 
       res.status(200).json({ data: picks });
