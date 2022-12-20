@@ -36,6 +36,17 @@ class UserRepository {
          }
     }
 
+    deleteRefreshToken = async(userId) => {
+        const existUser = await Users.findOne({raw: true, where: {userId}});
+        if(existUser) {
+            const refreshToken = null;
+            await Users.update({refreshToken}, {where: {userId}});
+            return true;
+        }else {
+            return false;
+        }
+    }
+
     update = async(userId, value) => {
         const [valueType, valuevalue] = value.split(" ");
         if(valueType === "image"){
@@ -49,6 +60,16 @@ class UserRepository {
             await Users.update({stack}, {where: {userId}});
         }
         return true;
+    }
+
+    secession = async(userId) => {
+        const existUser = await Users.findOne({raw: true, where: {userId}});
+        if(existUser) {
+            await Users.destroy({where: {userId}});
+            return true;
+        }else {
+            return false;
+        }
     }
 }
 module.exports = UserRepository;

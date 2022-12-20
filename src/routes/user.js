@@ -10,6 +10,9 @@ router.post('/signup', userController.signUp);
 // 로그인
 router.post('/login', userController.login);
 
+// 로그아웃
+router.put('/logout', authMiddleware, userController.logout);
+
 // 아이디 중복 검사
 router.get('/signup/id', userController.idcheck);
 
@@ -27,6 +30,9 @@ router.put('/mypage/stack', authMiddleware, userController.stackupdate);
 
 // 마이페이지
 router.get('/mypage', authMiddleware, userController.mypage);
+
+// 회원 탈퇴
+router.delete('/secession', authMiddleware, userController.secession);
 
 
 

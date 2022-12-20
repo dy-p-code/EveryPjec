@@ -53,6 +53,24 @@ class UserController {
     }
   }
 
+  logout = async (req, res, next) => {
+    try{
+        const { userId } = res.locals;
+        const result = await this.userService.logout(userId);
+        if(result){
+            return res
+              .status(200)
+              .json({
+                message: '로그 아웃 되었습니다.'
+              })
+        }else {
+            throw error;
+        }
+    }catch(error){
+        next(error);
+    }
+  }
+
   idcheck = async (req, res, next) => {
     try {
         const { loginId } = req.body;
@@ -171,6 +189,20 @@ class UserController {
         return res
           .status(200)
           .json({ result: true });
+    }catch(error){
+        next(error);
+    }
+  }
+
+  secession = async (req, res, next) => {
+    try{
+        const { userId }= res.locals;
+        const resultSecession = await this.userService.secession(userId);
+        if(resultSecession){
+            return res
+              .status(200)
+              .json({ result: true });
+        }
     }catch(error){
         next(error);
     }

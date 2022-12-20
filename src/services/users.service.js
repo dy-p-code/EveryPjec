@@ -50,6 +50,11 @@ class UserService {
     }
   };
 
+  logout = async (userId) => {
+    const result = await this.userRepository.deleteRefreshToken(userId);
+    return result;
+  }
+
   check = async (value) => {
     const result = await this.userRepository.findUser(value);
     return result;
@@ -59,6 +64,15 @@ class UserService {
     const result = await this.userRepository.update(userId, value);
     return result;
   };
+
+  secession = async (userId) => {
+    const result = await this.userRepository.secession(userId);
+    if(result){
+      return true;
+    }else{
+      return null;
+    }
+  }
 }
 
 module.exports = UserService;
