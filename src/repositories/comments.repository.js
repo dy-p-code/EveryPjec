@@ -1,4 +1,4 @@
-const { Users, sequelize } = require('../models');
+const { Users, sequelize, Posts, Alerts } = require('../models');
 class CommentRepository {
   constructor(commentsModel) {
     this.commentsModel = commentsModel;
@@ -26,6 +26,17 @@ class CommentRepository {
       comment,
     });
     console.log(createPostData);
+    const postUser = await Posts.findOne({
+      raw: true,
+      where: {postId},
+      attributes: ['userId']
+    })
+    if(postUser.userId !== userId){
+      await Alerts.create({
+        postId,
+        userId: postUser.userId
+      })
+    }
 
     return createPostData;
   };

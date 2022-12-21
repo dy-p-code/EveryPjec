@@ -1,3 +1,4 @@
+const { post } = require('superagent');
 const CommentService = require('../services/comments.service');
 
 class CommentController {
@@ -9,7 +10,6 @@ class CommentController {
       const { postId } = req.params;
       const { userId } = res.locals;
       const { comment } = req.body;
-
       await this.CommentService.createComment(postId, userId, comment);
       res.status(200).json({ message: '댓글을 작성 완료' });
     } catch (error) {

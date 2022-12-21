@@ -1,4 +1,4 @@
-const { Users, Alerts } = require("../models");
+const { Users, Posts, Alerts } = require("../models");
 const jwt = require("jsonwebtoken");
 require('dotenv').config();
 const env = process.env;
@@ -78,7 +78,18 @@ class UserRepository {
     }
 
     alert = async(userId) => {
-        const findAlert = await Alerts.findAll({raw: true, where: {userId}});
+        console.log(userId);
+        const findAlert = await Alerts.findAll({
+            where: {userId},
+            include: [
+              {
+                model: Posts,
+                attributes: ['title'],
+              },
+            ],
+            raw: true,
+            order: [['createdAt', 'desc']],
+        });
 
         return findAlert;
     }

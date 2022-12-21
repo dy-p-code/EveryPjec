@@ -239,6 +239,10 @@ class UserController {
     try{
         const { userId } = res.locals;
         const alerts = await this.userService.alert(userId);
+        console.log(alerts);
+        return res
+          .status(200)
+          .json({ alerts })
     }catch(error){
         next(error);
     }
