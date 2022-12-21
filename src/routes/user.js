@@ -40,4 +40,7 @@ router.delete('/secession', authMiddleware, userController.secession);
 // 알람 기능
 router.get('/alert', authMiddleware, userController.alert);
 
+// 알람 삭제
+router.delete('/alert/:alertId', authMiddleware, userController.alertdelete);
+
 module.exports = router;

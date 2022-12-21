@@ -89,8 +89,14 @@ class UserRepository {
             raw: true,
             order: [['createdAt', 'desc']],
         });
-
         return findAlert;
+    }
+
+    alertdelete = async(alertId) => {
+        const result = await Alerts.destroy({
+            where: {alertId}
+        });
+        return result;
     }
 }
 module.exports = UserRepository;

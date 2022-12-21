@@ -111,6 +111,11 @@ class UserService {
         message: `작성한 ${e['Post.title'].slice(0,10)}...글에 댓글이 등록되었습니다.`}
     });
   }
+
+  alertdelete = async (alertId) => {
+    const result = await this.userRepository.alertdelete(alertId);
+    return result;
+  }
 }
 
 module.exports = UserService;

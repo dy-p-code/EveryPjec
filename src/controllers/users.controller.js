@@ -246,6 +246,22 @@ class UserController {
         next(error);
     }
   }
+
+  alertdelete = async (req, res, next) => {
+    try{
+      console.log(req.params);
+      const { alertId } = req.params;
+      console.log(alertId);
+      const result = await this.userService.alertdelete(alertId);
+      if(result){
+        return res
+        .status(200)
+        .json({ message: true })
+      }
+    }catch(error){
+      next(error);
+    }
+  }
 }
 
 module.exports = UserController
