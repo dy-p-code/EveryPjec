@@ -109,6 +109,19 @@ class PostsController {
       next(error);
     }
   };
-}
 
+  //본인 게시글 조회
+  myPosts = async (req, res, next) => {
+    try {
+      const { userId } = res.locals;
+      const post = await this.postService.findMePost(userId);
+
+      res.status(200).json({ mePost: post });
+    } catch (error) {
+      console.log(error);
+      res.status(400).send({ message: '본인 게시물 조회 실패' });
+      next(error);
+    }
+  };
+}
 module.exports = PostsController;
