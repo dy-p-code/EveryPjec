@@ -27,15 +27,6 @@ module.exports = {
         },
         onDelete: 'cascade',
       },
-      commentId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'Comments',
-          key: 'commentId',
-        },
-        onDelete: 'cascade',
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

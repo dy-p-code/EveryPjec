@@ -1,6 +1,8 @@
 const UserService = require('../services/users.service.js')
 // 에러 핸들러
 const { ValidationError } = require("../exceptions/index.exception");
+// 쿼리 스트링
+const url = require('url');
 
 class UserController {
   constructor () {
@@ -73,7 +75,9 @@ class UserController {
 
   idcheck = async (req, res, next) => {
     try {
-        const { loginId } = req.body;
+        const queryDate = url.parse(req.url, true).query;
+        const { id } = queryDate;
+        const loginId = id;
         const IDCheck = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[A-Za-z0-9]{3,}$/;
         if (!IDCheck.test(loginId) ||
            (loginId.length < 4 || loginId.length > 12)) {
@@ -98,7 +102,8 @@ class UserController {
 
   nicknamecheck = async (req, res, next) => {
     try {
-        const { nickname } = req.body;
+        const queryDate = url.parse(req.url, true).query;
+        const { nickname } = queryDate;
         if (nickname.length < 4 || nickname.length > 12) {
             throw new ValidationError('닉네임 형식이 일치하지 않습니다.', 412);
         }
@@ -133,6 +138,7 @@ class UserController {
         return res
           .status(200)
           .json({
+                userId: userId,
                 nickname: nickname,
                 image: image,
                 loginId: loginId,
@@ -147,7 +153,7 @@ class UserController {
   imageupdate = async (req, res, next) => {
     try {
         const { userId } = res.locals;
-        const { image } = req.body;
+        const { image } = req.GET['image'];
         const value = "image " + image;
         const updateimage = await this.userService.update(userId, value);
         return res
@@ -161,7 +167,7 @@ class UserController {
   nickupdate = async (req, res, next) => {
     try {
         const { userId } = res.locals;
-        const { nickname } = req.body;
+        const { nickname } = req.GET['nickname'];
         if (nickname.length < 4 || nickname.length > 12) {
             throw new ValidationError('닉네임 형식이 일치하지 않습니다.', 412);
         }
@@ -183,7 +189,7 @@ class UserController {
   stackupdate = async (req, res, next) => {
     try {
         const { userId } = res.locals;
-        const { stack } = req.body;
+        const { stack } = req.GET['stack'];
         const value = "stack " + stack;
         const updatestack = await this.userService.update(userId, value);
         return res
@@ -203,6 +209,15 @@ class UserController {
               .status(200)
               .json({ result: true });
         }
+    }catch(error){
+        next(error);
+    }
+  }
+
+  alert = async (req, res, next) => {
+    try{
+        const { userId } = res.locals;
+        const alerts = await this.userService.alert(userId);
     }catch(error){
         next(error);
     }

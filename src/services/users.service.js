@@ -73,6 +73,11 @@ class UserService {
       return null;
     }
   }
+
+  alert = async (userId) => {
+    const result = await this.userRepository.alert(userId);
+    return result;
+  }
 }
 
 module.exports = UserService;

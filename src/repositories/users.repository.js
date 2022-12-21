@@ -1,4 +1,4 @@
-const { Users } = require("../models");
+const { Users, Alerts } = require("../models");
 const jwt = require("jsonwebtoken");
 require('dotenv').config();
 const env = process.env;
@@ -12,7 +12,7 @@ class UserRepository {
             return user
         }else if(valueType === "nickname"){
             const nickname = valuevalue;
-            const user = await Users.findOne({raw: true, where: {nickname}});
+            const user = await Users.findOne({where: {nickname}});
             return user
         }else if(valueType === "userId"){
             const userId = valuevalue;
@@ -70,6 +70,12 @@ class UserRepository {
         }else {
             return false;
         }
+    }
+
+    alert = async(userId) => {
+        const findAlert = await Alerts.findAll({raw: true, where: {userId}});
+
+        return findAlert;
     }
 }
 module.exports = UserRepository;

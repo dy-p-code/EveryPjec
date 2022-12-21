@@ -40,15 +40,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         onDelete: 'cascade',
       },
-      commentId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'Comments',
-          key: 'commentId',
-        },
-        onDelete: 'cascade',
-      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,

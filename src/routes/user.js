@@ -20,13 +20,13 @@ router.get('/signup/id', userController.idcheck);
 router.get('/signup/nickname', userController.nicknamecheck);
 
 // 프로필 변경하기
-router.put('/mypage/image', authMiddleware, userController.imageupdate);
+router.put('/image', authMiddleware, userController.imageupdate);
 
 // 닉네임 변경하기
-router.put('/mypage/nick', authMiddleware, userController.nickupdate);
+router.put('/nick', authMiddleware, userController.nickupdate);
 
 // 기술스택 변경하기
-router.put('/mypage/stack', authMiddleware, userController.stackupdate);
+router.put('/stack', authMiddleware, userController.stackupdate);
 
 // 마이페이지
 router.get('/mypage', authMiddleware, userController.mypage);
@@ -34,6 +34,7 @@ router.get('/mypage', authMiddleware, userController.mypage);
 // 회원 탈퇴
 router.delete('/secession', authMiddleware, userController.secession);
 
-
+// 알람 기능
+router.get('/alert', authMiddleware, userController.alert);
 
 module.exports = router;

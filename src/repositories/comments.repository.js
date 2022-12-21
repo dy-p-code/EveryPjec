@@ -1,4 +1,4 @@
-const { Users, sequelize } = require('../models');
+const { Users, sequelize, Alerts, Posts } = require('../models');
 class CommentRepository {
   constructor(commentsModel) {
     this.commentsModel = commentsModel;
@@ -24,6 +24,19 @@ class CommentRepository {
       userId,
       comment,
     });
+    const valid = await this.Posts.findOne({
+      where: {postId},
+      raw: true,
+      attributes: ['userId']
+    });
+    // 자신이 쓴 글의 자신의 댓글은 알람이 가지 않음
+    if(valid !== userId) {
+      const createAlert = await this.Alerts.create({
+        postId,
+        userId,
+      })
+      console.log(createAlert);
+    }
     console.log(createPostData);
 
     return createPostData;
