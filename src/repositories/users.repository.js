@@ -33,7 +33,12 @@ class UserRepository {
             const refreshToken = jwt.sign({}, env.SECRET_KEY, { expiresIn: '7D'});
             await Users.update({refreshToken}, {where: {userId}});
             return refreshToken;
-         }
+        }
+        if(valueType === "valid"){
+            const refreshToken = valuevalue;
+            const result = await Users.findOne({raw:true, where: {refreshToken}});
+            return result;
+        }
     }
 
     deleteRefreshToken = async(userId) => {

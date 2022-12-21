@@ -1,5 +1,5 @@
 const UserRepository = require('../repositories/users.repository.js');
-const { ValidationError } = require('../exceptions/index.exception');
+const { ValidationError, AuthenticationError } = require('../exceptions/index.exception');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
@@ -49,6 +49,36 @@ class UserService {
       return token;
     }
   };
+
+  reissue = async(tokenType, refreshToken) => {
+    const validateToken = function (tokenType, tokenValue) {
+      try {
+          if (tokenType !== 'Bearer') {
+              throw new AuthenticationError('전달된 토큰에서 오류가 발생하였습니다.', 401);
+          }
+          jwt.verify(tokenValue, env.SECRET_KEY);
+          return true;
+      } catch (error) {
+          return false;
+      }
+    };
+    if (!validateToken(tokenType, refreshToken)) {
+      throw new AuthenticationError(
+        'Token이 모두 만료되었습니다. 다시 로그인해주세요.',401);
+    };
+    let value = 'valid ' + refreshToken;
+    const validRefreshToken = await this.userRepository.refreshToken(value);
+    if(!validRefreshToken) {
+      throw new ValidationError('로그인 정보가 유효하지 않습니다.', 401);
+    }else{
+      const accessToken = jwt.sign({ 
+        userId: validRefreshToken.userId},
+        env.SECRET_KEY, 
+        { expiresIn: '1h'});
+      const token = accessToken + '%' + refreshToken;
+      return token;
+    }
+  }
 
   logout = async (userId) => {
     const result = await this.userRepository.deleteRefreshToken(userId);

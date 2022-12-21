@@ -1,10 +1,11 @@
-const { Users, sequelize, Alerts, Posts } = require('../models');
+const { Users, sequelize } = require('../models');
 class CommentRepository {
   constructor(commentsModel) {
     this.commentsModel = commentsModel;
   }
-  findAllComment = async () => {
+  findAllComment = async (postId) => {
     const Posts = await this.commentsModel.findAll({
+      where: { postId },
       include: [
         {
           model: Users,
@@ -24,19 +25,6 @@ class CommentRepository {
       userId,
       comment,
     });
-    const valid = await this.Posts.findOne({
-      where: {postId},
-      raw: true,
-      attributes: ['userId']
-    });
-    // 자신이 쓴 글의 자신의 댓글은 알람이 가지 않음
-    if(valid !== userId) {
-      const createAlert = await this.Alerts.create({
-        postId,
-        userId,
-      })
-      console.log(createAlert);
-    }
     console.log(createPostData);
 
     return createPostData;
@@ -50,15 +38,18 @@ class CommentRepository {
     return updatePostData;
   };
 
-  deleteComment = async (commentId, userId) => {
+  deleteComment = async (commentId) => {
     const deleteCommentData = await this.commentsModel.destroy({
-      where: {
-        commentId,
-        userId,
-      },
+      where: { commentId },
     });
-
     return deleteCommentData;
+  };
+  findCommentOne = async (commentId) => {
+    const exist = await this.commentsModel.findOne({
+      where: { commentId },
+      raw: true,
+    });
+    return exist;
   };
 }
 

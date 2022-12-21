@@ -1,3 +1,4 @@
+const { ValidationError } = require('../exceptions/index.exception');
 const PostRepository = require('../repositories/posts.repository');
 const { Posts, Users } = require('../models');
 class PostService {
@@ -72,6 +73,7 @@ class PostService {
   };
 
   updatePost = async (
+    userId,
     postId,
     title,
     content,
@@ -83,7 +85,12 @@ class PostService {
     contact
   ) => {
     const findPost = await this.postRepository.findPostById(postId);
-    if (!findPost) throw new Error("Post doesn't exist");
+    if (!findPost) {
+      throw new ValidationError('게시글을 찾을 수 없습니다.', 404);
+    } else if (findPost.userId !== userId) {
+      throw new ValidationError('권한이 없습니다.', 401);
+    }
+
     const upPost = await this.postRepository.updatePost(
       postId,
       title,
@@ -99,9 +106,13 @@ class PostService {
     return upPost;
   };
 
-  deletePost = async (postId) => {
-    // const findPost = await this.postRepository.findPostById(postId);
-    // if (!findPost) throw new Error("Post doesn't exist");
+  deletePost = async (postId, userId) => {
+    const findPost = await this.postRepository.findPostById(postId);
+    if (!findPost) {
+      throw new ValidationError('게시글을 찾을 수 없습니다.', 404);
+    } else if (findPost.userId !== userId) {
+      throw new ValidationError('권한이 없습니다.', 401);
+    }
     const del = await this.postRepository.deletePost(postId);
 
     return del;

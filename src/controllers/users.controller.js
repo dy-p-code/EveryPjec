@@ -55,6 +55,27 @@ class UserController {
     }
   }
 
+  reissuance = async (req, res, next) => {
+    try{
+        const token = req.headers['authorization'];
+        if (!token) {
+        throw new AuthenticationError();
+        }
+        let [tokenType, , refreshToken] = token.split('%');
+        const tokenReissuance = await this.userService.reissue(tokenType, refreshToken);
+        if(tokenReissuance){
+            return res
+              .status(200)
+              .json({
+                message: "Token이 정상적으로 재발급되었습니다.",
+                authorization: 'Bearer%' + tokenReissuance
+              })
+        };
+    }catch(error){
+        next(error);
+    }
+  }
+
   logout = async (req, res, next) => {
     try{
         const { userId } = res.locals;

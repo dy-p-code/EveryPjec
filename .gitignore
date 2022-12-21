@@ -151,4 +151,4 @@ swagger-output.json
 swagger.js
 .gitignore
 
-config.json
+config.js

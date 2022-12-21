@@ -10,6 +10,9 @@ router.post('/signup', userController.signUp);
 // 로그인
 router.post('/login', userController.login);
 
+// accessToken 재발급
+router.post('/reissuance', userController.reissuance);
+
 // 로그아웃
 router.put('/logout', authMiddleware, userController.logout);
 

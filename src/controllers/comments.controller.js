@@ -24,10 +24,10 @@ class CommentController {
     try {
       const { postId } = req.params;
 
-      const existPosts = await this.CommentService.findAllComment(postId);
+      const commentList = await this.CommentService.findAllComment(postId);
 
-      if (existPosts.length) {
-        res.status(200).json({ existPosts });
+      if (commentList.length) {
+        res.status(200).json({ commentList });
       } else {
         return res
           .status(400)

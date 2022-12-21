@@ -67,6 +67,7 @@ class PostsController {
 
   updatePost = async (req, res, next) => {
     try {
+      const { userId } = res.locals;
       const { postId } = req.params;
       const {
         title,
@@ -80,6 +81,7 @@ class PostsController {
       } = req.body;
 
       await this.postService.updatePost(
+        userId,
         postId,
         title,
         content,
@@ -100,8 +102,8 @@ class PostsController {
   deletePost = async (req, res, next) => {
     try {
       const { postId } = req.params;
-
-      await this.postService.deletePost(postId);
+      const { userId } = res.locals;
+      await this.postService.deletePost(postId, userId);
 
       res.status(200).json({ message: '게시글 삭제 완료' });
     } catch (error) {
