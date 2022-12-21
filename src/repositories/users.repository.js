@@ -78,7 +78,6 @@ class UserRepository {
     }
 
     alert = async(userId) => {
-        console.log(userId);
         const findAlert = await Alerts.findAll({
             where: {userId},
             include: [
