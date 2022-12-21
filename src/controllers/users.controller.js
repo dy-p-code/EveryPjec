@@ -153,7 +153,7 @@ class UserController {
   imageupdate = async (req, res, next) => {
     try {
         const { userId } = res.locals;
-        const { image } = req.GET['image'];
+        const { image } = req.body;
         const value = "image " + image;
         const updateimage = await this.userService.update(userId, value);
         return res
@@ -167,7 +167,7 @@ class UserController {
   nickupdate = async (req, res, next) => {
     try {
         const { userId } = res.locals;
-        const { nickname } = req.GET['nickname'];
+        const { nickname } = req.body;
         if (nickname.length < 4 || nickname.length > 12) {
             throw new ValidationError('닉네임 형식이 일치하지 않습니다.', 412);
         }
@@ -189,7 +189,7 @@ class UserController {
   stackupdate = async (req, res, next) => {
     try {
         const { userId } = res.locals;
-        const { stack } = req.GET['stack'];
+        const { stack } = req.body;
         const value = "stack " + stack;
         const updatestack = await this.userService.update(userId, value);
         return res
