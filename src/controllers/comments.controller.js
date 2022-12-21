@@ -26,13 +26,7 @@ class CommentController {
 
       const commentList = await this.CommentService.findAllComment(postId);
 
-      if (commentList.length) {
-        res.status(200).json({ commentList });
-      } else {
-        return res
-          .status(400)
-          .json({ errorMessage: '댓글이 존재하지 않습니다.' });
-      }
+      res.status(200).json({ commentList });
     } catch (error) {
       console.log(error);
       res.status(400).send({ message: '댓글 목록 조회 실패' });
