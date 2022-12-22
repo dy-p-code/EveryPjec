@@ -47,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       content: {
-        type: DataTypes.TEXT, // long-text ?
+        type: DataTypes.STRING, // long-text ?
         allowNull: false,
       },
       division: {
