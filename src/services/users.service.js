@@ -108,7 +108,11 @@ class UserService {
     const result = await this.userRepository.alert(userId);
     return result.map((e) => {
       return { 
-        message: `작성한 ${e['Post.title'].slice(0,10)}...글에 댓글이 등록되었습니다.`}
+        postId: e.postId,
+        alertId: e.alertId,
+        createdAt: e.createdAt,
+        message: `작성한 ${e['Post.title'].slice(0,10)}...글에 댓글이 등록되었습니다.`
+      }
     });
   }
 
