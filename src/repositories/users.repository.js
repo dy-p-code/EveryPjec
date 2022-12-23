@@ -1,4 +1,4 @@
-const { Users } = require("../models");
+const { Users, Posts, Alerts } = require("../models");
 const jwt = require("jsonwebtoken");
 require('dotenv').config();
 const env = process.env;
@@ -12,7 +12,7 @@ class UserRepository {
             return user
         }else if(valueType === "nickname"){
             const nickname = valuevalue;
-            const user = await Users.findOne({raw: true, where: {nickname}});
+            const user = await Users.findOne({where: {nickname}});
             return user
         }else if(valueType === "userId"){
             const userId = valuevalue;
@@ -33,7 +33,23 @@ class UserRepository {
             const refreshToken = jwt.sign({}, env.SECRET_KEY, { expiresIn: '7D'});
             await Users.update({refreshToken}, {where: {userId}});
             return refreshToken;
-         }
+        }
+        if(valueType === "valid"){
+            const refreshToken = valuevalue;
+            const result = await Users.findOne({raw:true, where: {refreshToken}});
+            return result;
+        }
+    }
+
+    deleteRefreshToken = async(userId) => {
+        const existUser = await Users.findOne({raw: true, where: {userId}});
+        if(existUser) {
+            const refreshToken = null;
+            await Users.update({refreshToken}, {where: {userId}});
+            return true;
+        }else {
+            return false;
+        }
     }
 
     update = async(userId, value) => {
@@ -49,6 +65,38 @@ class UserRepository {
             await Users.update({stack}, {where: {userId}});
         }
         return true;
+    }
+
+    secession = async(userId) => {
+        const existUser = await Users.findOne({raw: true, where: {userId}});
+        if(existUser) {
+            await Users.destroy({where: {userId}});
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    alert = async(userId) => {
+        const findAlert = await Alerts.findAll({
+            where: {userId},
+            include: [
+              {
+                model: Posts,
+                attributes: ['title'],
+              },
+            ],
+            raw: true,
+            order: [['createdAt', 'desc']],
+        });
+        return findAlert;
+    }
+
+    alertdelete = async(alertId) => {
+        const result = await Alerts.destroy({
+            where: {alertId}
+        });
+        return result;
     }
 }
 module.exports = UserRepository;

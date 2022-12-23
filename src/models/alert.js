@@ -10,8 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.belongsTo(models.Users, { foreignKey: 'userId' });
-      this.belongsTo(models.Users, { foreignKey: 'postId' });
-      this.belongsTo(models.Users, { foreignKey: 'commentId' });
+      this.belongsTo(models.Posts, { foreignKey: 'postId' });
     }
   }
   Alerts.init(
@@ -40,16 +39,12 @@ module.exports = (sequelize, DataTypes) => {
         },
         onDelete: 'cascade',
       },
-      commentId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'Comments',
-          key: 'commentId',
-        },
-        onDelete: 'cascade',
-      },
       createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
+      updatedAt: {
         allowNull: false,
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,

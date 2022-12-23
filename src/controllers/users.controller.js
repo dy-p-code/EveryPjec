@@ -1,6 +1,8 @@
 const UserService = require('../services/users.service.js')
 // 에러 핸들러
 const { ValidationError } = require("../exceptions/index.exception");
+// 쿼리 스트링
+const url = require('url');
 
 class UserController {
   constructor () {
@@ -53,9 +55,50 @@ class UserController {
     }
   }
 
+  reissuance = async (req, res, next) => {
+    try{
+        const token = req.headers['authorization'];
+        if (!token) {
+        throw new AuthenticationError();
+        }
+        let [tokenType, , refreshToken] = token.split('%');
+        const tokenReissuance = await this.userService.reissue(tokenType, refreshToken);
+        if(tokenReissuance){
+            return res
+              .status(200)
+              .json({
+                message: "Token이 정상적으로 재발급되었습니다.",
+                authorization: 'Bearer%' + tokenReissuance
+              })
+        };
+    }catch(error){
+        next(error);
+    }
+  }
+
+  logout = async (req, res, next) => {
+    try{
+        const { userId } = res.locals;
+        const result = await this.userService.logout(userId);
+        if(result){
+            return res
+              .status(200)
+              .json({
+                message: '로그 아웃 되었습니다.'
+              })
+        }else {
+            throw error;
+        }
+    }catch(error){
+        next(error);
+    }
+  }
+
   idcheck = async (req, res, next) => {
     try {
-        const { loginId } = req.body;
+        const queryDate = url.parse(req.url, true).query;
+        const { id } = queryDate;
+        const loginId = id;
         const IDCheck = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[A-Za-z0-9]{3,}$/;
         if (!IDCheck.test(loginId) ||
            (loginId.length < 4 || loginId.length > 12)) {
@@ -80,7 +123,8 @@ class UserController {
 
   nicknamecheck = async (req, res, next) => {
     try {
-        const { nickname } = req.body;
+        const queryDate = url.parse(req.url, true).query;
+        const { nickname } = queryDate;
         if (nickname.length < 4 || nickname.length > 12) {
             throw new ValidationError('닉네임 형식이 일치하지 않습니다.', 412);
         }
@@ -115,6 +159,7 @@ class UserController {
         return res
           .status(200)
           .json({
+                userId: userId,
                 nickname: nickname,
                 image: image,
                 loginId: loginId,
@@ -173,6 +218,48 @@ class UserController {
           .json({ result: true });
     }catch(error){
         next(error);
+    }
+  }
+
+  secession = async (req, res, next) => {
+    try{
+        const { userId }= res.locals;
+        const resultSecession = await this.userService.secession(userId);
+        if(resultSecession){
+            return res
+              .status(200)
+              .json({ result: true });
+        }
+    }catch(error){
+        next(error);
+    }
+  }
+
+  alert = async (req, res, next) => {
+    try{
+        const { userId } = res.locals;
+        const alerts = await this.userService.alert(userId);
+        return res
+          .status(200)
+          .json({ alerts })
+    }catch(error){
+        next(error);
+    }
+  }
+
+  alertdelete = async (req, res, next) => {
+    try{
+      console.log(req.params);
+      const { alertId } = req.params;
+      console.log(alertId);
+      const result = await this.userService.alertdelete(alertId);
+      if(result){
+        return res
+        .status(200)
+        .json({ message: true })
+      }
+    }catch(error){
+      next(error);
     }
   }
 }
